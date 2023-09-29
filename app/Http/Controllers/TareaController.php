@@ -13,6 +13,7 @@ class TareaController extends Controller
     }
     public function crearTarea(Request $request)
     {
+        var_dump($request->post("titulo"));
         try {
             $Tarea = new Tarea();
 
@@ -29,11 +30,25 @@ class TareaController extends Controller
     }
     public function editarTarea(Request $request)
     {
-        $Usuario = Tarea::findOrFail($request->post("id_user"));
-        // return Tarea::all();
+        try {
+            $Tarea = Tarea::findOrFail($request->post("id"));
+            $Tarea->titulo = $request->post('titulo');
+            $Tarea->contenido = $request->post('contenido');
+            $Tarea->estado = $request->post('estado');
+            $Tarea->autor = $request->post('autor');
+
+            $Tarea->save();
+        } catch (\Throwable $th) {
+            return ['message' => $th];
+        }
     }
-    public function eliminarTarea()
+    public function eliminarTarea(Request $request)
     {
-        return Tarea::all();
+        $SelectedTask = Tarea::findOrFail($request->post("id"));
+        $SelectedTask->delete();
+
+        return response([
+            'message' => "Task Eliminated Correctly"
+        ]);
     }
 }
