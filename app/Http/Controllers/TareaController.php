@@ -11,6 +11,12 @@ class TareaController extends Controller
     {
         return Tarea::all();
     }
+
+    public function listarUnaTarea(Request $request)
+    {
+        $Tarea = Tarea::findOrFail($request->post("id"));
+        return $Tarea;
+    }
     public function crearTarea(Request $request)
     {
         var_dump($request->post("titulo"));
